@@ -1,0 +1,36 @@
+1、内存泄漏和内存溢出分别是什么，有什么关系？
+内存泄露是指保存了不可能再被访问的变量引用，导致垃圾回收器无法回收内存。
+也就是说，在java中有些对象的生命周期是有限的，当他们完成了特定的逻辑后将会被垃圾回收；但是，如果在对象的生命周期本来该被垃圾回收时这个对象还被别的对象所持有引用，那就会导致内存泄露。
+如：在Activity中创建了Handler对象，Handler属于非静态内部类，默认持有外部类的引用，如果handler执行延时操作，Activity退出，会由于Handler对象么没有被释放，导致Activity不能被释放回收
+内存溢出是指虚拟机内存耗尽，无法为新对象分配内存，导致引用崩溃。大量内存泄漏会导致内存溢出
+
+2、什么情况下会导致内存泄漏？
+1）资源释放问题
+      程序代码长期持有某些资源，如context、cursor等引用，资源得不到释放
+2）static关键字、单例模式
+      static修饰成员变量时，该变量属于该类，而不是该类的实例，所以该变量的生命周期很长，当用它来引用context等实例时，很可能会造成内存泄漏
+      单例模式持有context等实例时，很有可能造成内存泄漏
+      解决：可使用ApplicationContext，使用WeakReference代替强引用，或者及时将引用置空。   
+3）线程导致内存泄漏
+      线程内部使用内部类，因为非静态内部类持有外部类的引用，导致内存泄漏，可换成静态内部类解决
+      线程内部持有了context等资源
+4）bitmap对象没有调用recycle()及时释放内存导致内存泄漏
+
+3、如何进行内存优化？
+1）图片优化
+     等比例缩放、缓存性能优化、重用优化、图片质量压缩优化
+2）listview、recyclerview优化
+     item布局层级、复用机制、viewholder、异步处理数据、
+3）UI视图层级优化
+     ViewStub（占位符）、merge+include（减少视图层级）
+4）线程优化，使用线程池
+5）receiver、listener等监听器注销
+6）string优化
+     当频繁操作一个字符串时，可使用StringBuffer代替string   
+7）使用优化的数据容器， SparseArray / SparseBooleanArray / LongSparseArra代替HashMap
+8）自定义控件，onDraw()方法中避免创建大量临时变量，以免频繁gc   
+
+4、如何检测内存泄漏
+1）Memory Monitor，Android Studio自带
+2）LeakCanary，开源库
+3）Heap Viewer，Android Studio工具                                                          
