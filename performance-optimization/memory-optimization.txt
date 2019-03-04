@@ -29,6 +29,8 @@
      当频繁操作一个字符串时，可使用StringBuffer代替string   
 7）使用优化的数据容器， SparseArray / SparseBooleanArray / LongSparseArra代替HashMap
 8）自定义控件，onDraw()方法中避免创建大量临时变量，以免频繁gc   
+9）程序代码优化，如避免在多层循环内层创建局部变量、在onDraw()中创建大量临时变量等（这些会造成内存抖动）
+
 
 4、如何检测内存泄漏
 1）Memory Monitor，Android Studio自带
