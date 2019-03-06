@@ -1,0 +1,13 @@
+Service与Activity的双向通信
+1、通过bindService()方式才能使Service与Activity绑定，进行双向通信，并且Service的生命周期受Activity的影响，当Activity销毁后，Service也销毁了
+2、通过startService()方式启动Service，不会与具体的Activity绑定，而是受真个应用的生命周期影响，不会随着Activity的销毁而销毁
+3、通过bindService()启动Service，通过Messenger可以实现双向通信
+	Service：内部维护一个Handler，通过该Handler创建一个serviceMessenger，在onBind()方法中，将该serviceMessenger的binder属性返回给客户端
+
+	Client：内部维护一个Handler，通过该Handler创建一个clientMessenger，在绑定service时，通过ServiceConnection的回调，拿到服务端的IBinder对象，将该IBinder对象生成一个serviceMessenger，该serviceMessenger指向service中的serviceMessenger
+
+	Client：client利用serviceMessenger向service发送消息，并将其维护的clientMessenger通过Message载体发送给service
+
+	Service：接收到client发来的消息，拿到Message载体中的clientMessenger，并将其维护在自身中
+
+	以上，客户端维护一个Handler、一个serviceMessenger(service发来的)、一个clientMessenger（自身生成的，需要发送到service的）；服务端维护一个Handler、一个serviceMessenger(自身生成的，需要发送到client的)、一个clientMessenger（client发送过来的）；C/S利用彼此的Messenger发送消息给彼此，而在自身维护的Handler中接收对方发来的消息
