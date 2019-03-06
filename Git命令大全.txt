@@ -1,0 +1,60 @@
+一、版本库部分:
+1、git init;        在当前目录创建版本库
+2、git add readme.txt; 把readme.txt添加到仓库中 git add -A;  添加所有编辑过的文件 git add -A path;添加path路径下所有修改过的文件
+3、git commit -m xxx;       把文件提交到仓库中，xxx是本次提交的说明;注意：提交的是暂存区中的内容，即被add的内容
+4、git status;         查看当前状态
+5、git diff xxx;        查看xxx文件的修改内容;git diff HEAD -- xxx;查看当前版本的xxx文件的修改内容
+6、添加文件或者修改文件都需要先add，然后commit
+7、git log  [--pretty=oneline];       查看每次提交记录
+8、git reset --hard HEAD`;    将当前版本回退到上一个版本，HEAD标识当前版本,HEAD`、HEAD``....分别表示上一版本，上上版本，HEAD~100表示前100个版本，或者使用:git reset --hard commit_id;
+9、git reset HEAD xxx;    将已经添加到暂存区中的内容撤销，再执行git checkout -- xxx;工作区和版本库内容一致
+10、git reflog;    查看命令历史
+11、git checkout -- xxx;   将xxx文件在工作区的修改全部撤销，添加到暂存区的内容不会撤销
+二、远程仓库与本地仓库协调使用
+1、git remote add origin git@github.com:jomon9/xxx.git;    将本地xxx.git仓库与远程仓库关联
+2、git push -u origin master;   第一次将本地仓库所有内容推送到远程仓库
+3、git push origin master;    将本地仓库master分支的最新修改推送至github
+4、git clone git@github.com:jemon9/xxx.git;  将远程仓库克隆到本地
+三、分支管理与使用
+1、git checkout -b xxx;    创建xxx分支，并且切换到xxx分支
+2、git branch xxx;           创建xxx分支
+3、git checkout xxx;        切换到xxx分支
+4、git branch；              查看当前分支
+5、git merge xxx;            将xxx分支内容合并到当前分支上
+6、git branch -d xxx;       删除xxx分支
+7、git checkout [分支1] -- xxx;      从分支1中获取xxx文件到本分支
+8、当合并分支时产生冲突解决办法：在文件中手动解决冲突，然后再add,commit
+9、git log --graph;          图表形式查看分支情况
+10、bug分支管理：
+      a. git stash;      将当前的分支内容储存起来，先去解决bug，解决bug后再将该分支的工作现场重现
+      b. git stash list;  查看储存的工作现场，
+      c. git stash apply; 恢复工作现场，但是stash仍存在，需要git stash drop删除
+      d. git stash pop;   恢复工作现场，同时删除stash
+11、git branch -D xxx;  强行删除xxx，xxx没有被合并过
+12、git remote [参数];  查看远程仓库的信息
+13、git push origin master;   将本地分支master上的所有本地提交推送到远程库origin中，   
+14、git pull;    获取远程库分支上的最新数据
+15、多人协作的工作模式通常是这样：
+	首先，可以试图用git push origin branch-name推送自己的修改；
+	如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+	如果合并有冲突，则解决冲突，并在本地提交；
+	没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+	如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --	set-upstream branch-name origin/branch-name。
+	这就是多人协作的工作模式，一旦熟悉了，就非常简单。 
+16、git checkout -b branch-name origin/branch-name;   在本地创建和远程分支对应的分支
+
+
+
+四、使用过程中的一些解决方案：
+1、本地需要获取服务器某分支的某文件夹(xxx)下的内容，并取代本地工作空间（注意： 不是全部更新本地库和工作空间）
+   git fetch;   更新本地库,但不更新工作空间
+   git checkout origin/master -- xxx; 用本地库来更新工作空间的某个文件夹
+2、win下android studio 的gitignore不起作用时的解决办法：先清除本地缓存
+   git rm -r --cached .
+   git add .
+   git commit -m "update .gitignore"
+   git push origin master
+   注意：如果出现warning: LF will be replaced by CRLF问题，解决办法见3
+3、win使用git时出现warning: LF will be replaced by CRLF
+   在git bash下:   rm -rf .git
+                         git config --global core.autocrlf false

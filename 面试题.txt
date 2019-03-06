@@ -1,0 +1,21 @@
+基础
+1、抽象类和接口的区别？
+2、View的绘制？wrap_content如何处理？
+3、View的事件分发？ ACTION_CANCEL事件何时触发？
+4、Handler机制？
+5、断点续传？
+6、三次握手、四次挥手？
+7、解决滑动冲突？
+8、Fragment生命周期？不同情况表现？
+9、service原理？两种不同的使用方式？
+10、binder机制？
+11、HashMap、ConcurrentHashMap源码实现？
+12、图片加载框架、有什么区别？Glide、universal_imageloader、Picasso、Fresco
+13、Asynctask原理？
+14、主线程中的Looper.loop()一直无限循环为什么不会造成ANR？
+15、主流框架：Retrofit、okhttp、EventBus、Dagger2、RxJava、RxAndroid
+
+虚拟机
+1、垃圾回收？引用类型？
+2、类如何加载？
+3、java虚拟机内存结构
